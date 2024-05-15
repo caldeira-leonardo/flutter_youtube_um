@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:youtube_um/models/moeda.dart';
+import 'package:youtube_um/pages/moedas_detalhes_page.dart';
 import 'package:youtube_um/repositories/moeda_repository.dart';
 
 class MoedasPage extends StatefulWidget {
@@ -85,6 +86,11 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
         : null;
   }
 
+  mostrarDetalhes(moeda) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (_) => MoedasDetalhesPage(moeda: moeda)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,6 +134,7 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
                     trailing: Text(real.format(tabela[moeda].preco)),
                     selected: selecionadas.contains(tabela[moeda]),
                     selectedTileColor: Colors.indigo[50],
+                    onTap: () => mostrarDetalhes(tabela[moeda]),
                     onLongPress: () {
                       setState(() {
                         (selecionadas.contains(tabela[moeda]))
