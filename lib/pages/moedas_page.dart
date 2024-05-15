@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:youtube_um/models/moeda.dart';
 import 'package:youtube_um/repositories/moeda_repository.dart';
@@ -10,7 +11,23 @@ class MoedasPage extends StatefulWidget {
   State<MoedasPage> createState() => _MoedasPageState();
 }
 
-class _MoedasPageState extends State<MoedasPage> {
+class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
+  bool showFAB = true;
+
+  late final _controller = AnimationController(
+      duration: const Duration(microseconds: 400), vsync: this)
+    ..forward();
+
+  late final _animation =
+      CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
+
+  @override
+  void dispose() {
+    dispose();
+    _controller.dispose();
+    _animation.dispose();
+  }
+
   var tabela = MoedaRepository.tabela;
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   List<Moeda> selecionadas = [];
@@ -54,12 +71,15 @@ class _MoedasPageState extends State<MoedasPage> {
 
   handleShowFavoriteButton() {
     return selecionadas.isNotEmpty
-        ? FloatingActionButton.extended(
-            onPressed: () {},
-            icon: const Icon(Icons.star),
-            label: const Text(
-              'FAVORITAR',
-              style: TextStyle(letterSpacing: 0, fontWeight: FontWeight.bold),
+        ? ScaleTransition(
+            scale: _animation,
+            child: FloatingActionButton.extended(
+              onPressed: () {},
+              icon: const Icon(Icons.star),
+              label: const Text(
+                'FAVORITAR',
+                style: TextStyle(letterSpacing: 0, fontWeight: FontWeight.bold),
+              ),
             ),
           )
         : null;
@@ -68,47 +88,60 @@ class _MoedasPageState extends State<MoedasPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: appBarDinamica(),
-          actions: [
-            IconButton(
-                onPressed: () => setState(() {
-                      sortItems();
-                    }),
-                icon: const Icon(Icons.swap_vert_circle))
+        body: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, __) => [
+            const SliverAppBar(
+              title: Text('Cripto moedas'),
+              snap: true,
+              floating: true,
+            )
           ],
-        ),
-        body: ListView.separated(
-            itemBuilder: (BuildContext context, int moeda) {
-              return ListTile(
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12))),
-                leading: (selecionadas.contains(tabela[moeda]))
-                    ? const CircleAvatar(
-                        child: Icon(Icons.check),
-                      )
-                    : SizedBox(
-                        width: 40,
-                        child: Image.asset(tabela[moeda].icone),
-                      ),
-                title: Text(tabela[moeda].nome,
-                    style: const TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.w500)),
-                trailing: Text(real.format(tabela[moeda].preco)),
-                selected: selecionadas.contains(tabela[moeda]),
-                selectedTileColor: Colors.indigo[50],
-                onLongPress: () {
-                  setState(() {
-                    (selecionadas.contains(tabela[moeda]))
-                        ? selecionadas.remove(tabela[moeda])
-                        : selecionadas.add(tabela[moeda]);
-                  });
-                },
-              );
+          body: NotificationListener<UserScrollNotification>(
+            onNotification: (scroll) {
+              if (scroll.direction == ScrollDirection.reverse && showFAB) {
+                _controller.reverse();
+                showFAB = false;
+              } else if (scroll.direction == ScrollDirection.forward &&
+                  !showFAB) {
+                _controller.forward();
+                showFAB = true;
+              }
+              return true;
             },
-            padding: const EdgeInsets.all(16),
-            separatorBuilder: (_, __) => const Divider(),
-            itemCount: tabela.length),
+            child: ListView.separated(
+                itemBuilder: (BuildContext context, int moeda) {
+                  return ListTile(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12))),
+                    leading: (selecionadas.contains(tabela[moeda]))
+                        ? const CircleAvatar(
+                            child: Icon(Icons.check),
+                          )
+                        : SizedBox(
+                            width: 40,
+                            child: Image.asset(tabela[moeda].icone),
+                          ),
+                    title: Text(tabela[moeda].nome,
+                        style: const TextStyle(
+                            fontSize: 17, fontWeight: FontWeight.w500)),
+                    trailing: Text(real.format(tabela[moeda].preco)),
+                    selected: selecionadas.contains(tabela[moeda]),
+                    selectedTileColor: Colors.indigo[50],
+                    onLongPress: () {
+                      setState(() {
+                        (selecionadas.contains(tabela[moeda]))
+                            ? selecionadas.remove(tabela[moeda])
+                            : selecionadas.add(tabela[moeda]);
+                      });
+                    },
+                  );
+                },
+                padding: const EdgeInsets.all(16),
+                separatorBuilder: (_, __) => const Divider(),
+                itemCount: tabela.length),
+          ),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: handleShowFavoriteButton());
   }
