@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:youtube_um/models/moeda.dart';
+import 'package:youtube_um/widgets/dropdown.dart';
+import 'package:youtube_um/widgets/full_width_button.dart';
 
 class MoedasDetalhesPage extends StatefulWidget {
-  Moeda moeda;
-  MoedasDetalhesPage({super.key, required this.moeda});
+  final Moeda moeda;
+  const MoedasDetalhesPage({super.key, required this.moeda});
 
   @override
   MoedasDetalhesPageState createState() => MoedasDetalhesPageState();
@@ -122,21 +124,17 @@ class MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
             Container(
               alignment: Alignment.bottomCenter,
               margin: const EdgeInsets.only(top: 24),
-              child: ElevatedButton(
+              child: FullWidthButton(
+                icon: Icons.check,
                 onPressed: comprar,
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.check),
-                    Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text(
-                        'Comprar',
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    )
-                  ],
-                ),
+                label: 'Comprar',
+              ),
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              margin: const EdgeInsets.only(top: 24),
+              child: Dropdown(
+                items: const ['1', '2', '3', '4', '5'],
               ),
             )
           ],
