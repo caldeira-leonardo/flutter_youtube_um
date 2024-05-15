@@ -9,8 +9,8 @@ class MeuAplicativo extends StatelessWidget {
     return MaterialApp(
       title: 'MoedasBase',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.green),
-      home: const MoedasPage(),
+      theme: ThemeData(primarySwatch: Colors.indigo, useMaterial3: false),
+      home: MoedasPage(),
     );
   }
 }
