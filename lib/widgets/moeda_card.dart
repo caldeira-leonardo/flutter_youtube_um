@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:youtube_um/app_controller.dart';
-import '../configs/app_settings.dart';
+
+import '../app_controller.dart';
+import '../models/moeda.dart';
 import '../pages/moedas_detalhes_page.dart';
 import '../repositories/favoritas_repository.dart';
-import '../models/moeda.dart';
 
 class MoedaCard extends StatefulWidget {
   final Moeda moeda;

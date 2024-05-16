@@ -1,4 +1,4 @@
-import 'package:youtube_um/models/comida.dart';
+import '../models/comida.dart';
 
 class ComidaRepository {
   static List<Comida> carnes = [

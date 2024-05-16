@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'package:youtube_um/app_controller.dart';
-import 'moedas_detalhes_page.dart';
+
+import '../app_controller.dart';
 import '../configs/app_settings.dart';
 import '../models/moeda.dart';
 import '../repositories/favoritas_repository.dart';
 import '../repositories/moeda_repository.dart';
+import 'moedas_detalhes_page.dart';
 
 class MoedasPage extends StatefulWidget {
   const MoedasPage({super.key});

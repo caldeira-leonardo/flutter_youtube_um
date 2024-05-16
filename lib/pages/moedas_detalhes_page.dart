@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:youtube_um/models/moeda.dart';
-import 'package:youtube_um/widgets/dropdown.dart';
-import 'package:youtube_um/widgets/full_width_button.dart';
+
+import '../models/moeda.dart';
+import '../widgets/dropdown.dart';
+import '../widgets/full_width_button.dart';
 
 class MoedasDetalhesPage extends StatefulWidget {
   final Moeda moeda;

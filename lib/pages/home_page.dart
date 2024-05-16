@@ -1,10 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:youtube_um/pages/comidas_page.dart';
-import 'package:youtube_um/pages/flexible_page.dart';
-import 'package:youtube_um/pages/moedas_page.dart';
-import 'package:youtube_um/pages/favoritas_page.dart';
+
+import 'comidas_page.dart';
+import 'configuracoes_page.dart';
+import 'favoritas_page.dart';
+import 'flexible_page.dart';
+import 'moedas_page.dart';
 
 enum BottomNavBar { novo, antigo }
 
@@ -37,11 +37,10 @@ class HomePageState extends State<HomePage> {
         ? [
             const MoedasPage(),
             const FavoritasPage(),
-            const RestauranteDetalhes(),
-            const FlexiblePage(),
+            const ConfiguracoesPage(),
           ]
         : [
-            const MoedasPage(),
+            const FlexiblePage(),
             const RestauranteDetalhes(),
           ];
   }
@@ -63,9 +62,7 @@ class HomePageState extends State<HomePage> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.star), label: 'Favoritas'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.fastfood), label: 'Comidas'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.fullscreen_exit), label: 'Tela flexível'),
+                  icon: Icon(Icons.settings), label: 'Conta'),
             ],
           )
         : NavigationBarTheme(

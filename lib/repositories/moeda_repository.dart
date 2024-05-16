@@ -1,4 +1,4 @@
-import 'package:youtube_um/models/moeda.dart';
+import '../models/moeda.dart';
 
 class MoedaRepository {
   static List<Moeda> tabela = [
