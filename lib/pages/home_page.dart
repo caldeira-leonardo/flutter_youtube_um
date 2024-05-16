@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youtube_um/pages/comidas_page.dart';
 import 'package:youtube_um/pages/moedas_page.dart';
 import 'package:youtube_um/pages/favoritas_page.dart';
 
@@ -31,16 +32,14 @@ class HomePageState extends State<HomePage> {
       body: PageView(
         controller: pc,
         onPageChanged: setPaginaAtual,
-        children: const [
-          MoedasPage(),
-          FavoritasPage(),
-        ],
+        children: const [MoedasPage(), FavoritasPage(), RestauranteDetalhes()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: paginaAtual,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Todas'),
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favoritas')
+          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favoritas'),
+          BottomNavigationBarItem(icon: Icon(Icons.fastfood), label: 'Comidas')
         ],
         onTap: (pagina) {
           pc.animateToPage(pagina,
