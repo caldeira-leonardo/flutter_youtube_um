@@ -6,7 +6,7 @@ class RestauranteDetalhes extends StatefulWidget {
   const RestauranteDetalhes({super.key});
 
   @override
-  _RestauranteDetalhesState createState() => _RestauranteDetalhesState();
+  State<RestauranteDetalhes> createState() => _RestauranteDetalhesState();
 }
 
 class _RestauranteDetalhesState extends State<RestauranteDetalhes> {

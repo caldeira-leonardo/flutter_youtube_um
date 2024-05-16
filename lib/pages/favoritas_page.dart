@@ -4,7 +4,7 @@ class FavoritasPage extends StatefulWidget {
   const FavoritasPage({super.key});
 
   @override
-  FavoritasPageState createState() => FavoritasPageState();
+  State<FavoritasPage> createState() => FavoritasPageState();
 }
 
 class FavoritasPageState extends State<FavoritasPage> {

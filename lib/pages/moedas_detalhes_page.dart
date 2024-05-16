@@ -10,10 +10,10 @@ class MoedasDetalhesPage extends StatefulWidget {
   const MoedasDetalhesPage({super.key, required this.moeda});
 
   @override
-  MoedasDetalhesPageState createState() => MoedasDetalhesPageState();
+  State<MoedasDetalhesPage> createState() => _MoedasDetalhesPageState();
 }
 
-class MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
+class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
   final _form = GlobalKey<FormState>();
