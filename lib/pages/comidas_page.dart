@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_um/models/comida.dart';
-import 'package:youtube_um/repositories/comida_repositories.dart';
+import 'package:youtube_um/repositories/comida_repository.dart';
 
 class RestauranteDetalhes extends StatefulWidget {
   const RestauranteDetalhes({super.key});

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:youtube_um/models/moeda.dart';
 import 'package:youtube_um/pages/moedas_detalhes_page.dart';
+import 'package:youtube_um/repositories/favoritas_repository.dart';
 import 'package:youtube_um/repositories/moeda_repository.dart';
 
 class MoedasPage extends StatefulWidget {
@@ -33,6 +35,7 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   List<Moeda> selecionadas = [];
   bool isSorted = false;
+  late FavoritasRepository favoritas;
 
   sortItems() {
     if (!isSorted) {
@@ -54,11 +57,7 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
       return AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            setState(() {
-              selecionadas = [];
-            });
-          },
+          onPressed: limparSelecionadas,
         ),
         title: Text('${selecionadas.length} selecionadas'),
         backgroundColor: Colors.blueGrey[50],
@@ -75,7 +74,10 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
         ? ScaleTransition(
             scale: _animation,
             child: FloatingActionButton.extended(
-              onPressed: () {},
+              onPressed: () {
+                favoritas.saveAll(selecionadas);
+                limparSelecionadas();
+              },
               icon: const Icon(Icons.star),
               label: const Text(
                 'FAVORITAR',
@@ -91,8 +93,17 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
         MaterialPageRoute(builder: (_) => MoedasDetalhesPage(moeda: moeda)));
   }
 
+  limparSelecionadas() {
+    setState(() {
+      selecionadas = [];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    favoritas = Provider.of<FavoritasRepository>(context);
+    favoritas = context.watch<FavoritasRepository>();
+
     return Scaffold(
         body: NestedScrollView(
           floatHeaderSlivers: true,
@@ -128,9 +139,13 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
                             width: 40,
                             child: Image.asset(tabela[moeda].icone),
                           ),
-                    title: Text(tabela[moeda].nome,
-                        style: const TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w500)),
+                    title: Row(children: [
+                      Text(tabela[moeda].nome,
+                          style: const TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.w500)),
+                      if (favoritas.lista.contains(tabela[moeda]))
+                        const Icon(Icons.circle, color: Colors.amber, size: 8)
+                    ]),
                     trailing: Text(real.format(tabela[moeda].preco)),
                     selected: selecionadas.contains(tabela[moeda]),
                     selectedTileColor: Colors.indigo[50],
