@@ -1,32 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:youtube_um/app_controller.dart';
 import '../configs/app_settings.dart';
 import '../pages/moedas_detalhes_page.dart';
 import '../repositories/favoritas_repository.dart';
 import '../models/moeda.dart';
 
 class MoedaCard extends StatefulWidget {
-  Moeda moeda;
-  MoedaCard({super.key, required this.moeda});
+  final Moeda moeda;
+  const MoedaCard({super.key, required this.moeda});
 
   @override
   State<MoedaCard> createState() => _MoedaCardState();
 }
 
 class _MoedaCardState extends State<MoedaCard> {
-  late NumberFormat real;
-  late Map<String, String> loc;
-
   static Map<String, Color> precoColor = <String, Color>{
     'up': Colors.teal,
     'down': Colors.indigo
   };
-
-  readNumberFormat() {
-    loc = context.watch<AppSettings>().locale;
-    real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
-  }
 
   abrirDetalhes() {
     Navigator.push(
@@ -37,9 +30,12 @@ class _MoedaCardState extends State<MoedaCard> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    readNumberFormat();
+  void initState() {
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(top: 12),
       elevation: 2,
@@ -80,7 +76,8 @@ class _MoedaCardState extends State<MoedaCard> {
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Text(
-                real.format(widget.moeda.preco),
+                AppController.currencyFormate(
+                    context: context, valor: widget.moeda.preco),
                 style: TextStyle(
                     fontSize: 16, color: precoColor['down'], letterSpacing: -1),
               ),

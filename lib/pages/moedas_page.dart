@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:youtube_um/app_controller.dart';
 import 'moedas_detalhes_page.dart';
 import '../configs/app_settings.dart';
 import '../models/moeda.dart';
@@ -34,21 +35,17 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
 
   var tabela = MoedaRepository.tabela;
 
-  late NumberFormat real;
-  late Map<String, String> loc;
   late FavoritasRepository favoritas;
 
   List<Moeda> selecionadas = [];
   bool isSorted = false;
 
-  readNumberFormat() {
-    loc = context.watch<AppSettings>().locale;
-    real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
-  }
-
   changeLanguageButton() {
-    final locale = loc['locale'] == 'pt_BR' ? 'en_US' : 'pt_BR';
-    final name = loc['locale'] == 'pt_BR' ? '\$' : 'R\$';
+    AppSettings appSettings = context.watch<AppSettings>();
+    final loc = appSettings.locale;
+
+    final locale = loc.locale == 'pt_BR' ? 'en_US' : 'pt_BR';
+    final name = loc.locale == 'pt_BR' ? '\$' : 'R\$';
 
     return PopupMenuButton(
       icon: const Icon(Icons.language),
@@ -143,8 +140,6 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
     // favoritas = Provider.of<FavoritasRepository>(context);
     favoritas = context.watch<FavoritasRepository>();
 
-    readNumberFormat();
-
     return Scaffold(
         body: NestedScrollView(
           floatHeaderSlivers: true,
@@ -174,14 +169,21 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
                             width: 40,
                             child: Image.asset(tabela[moeda].icone),
                           ),
-                    title: Row(children: [
-                      Text(tabela[moeda].nome,
-                          style: const TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.w500)),
-                      if (favoritas.lista.contains(tabela[moeda]))
-                        const Icon(Icons.circle, color: Colors.amber, size: 8)
-                    ]),
-                    trailing: Text(real.format(tabela[moeda].preco)),
+                    title: Row(
+                      children: [
+                        Text(tabela[moeda].nome,
+                            style: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w500)),
+                        if (favoritas.lista.contains(tabela[moeda]))
+                          const Icon(Icons.circle, color: Colors.amber, size: 8)
+                      ],
+                    ),
+                    trailing: Text(
+                      AppController.currencyFormate(
+                        context: context,
+                        valor: tabela[moeda].preco,
+                      ),
+                    ),
                     selected: selecionadas.contains(tabela[moeda]),
                     selectedTileColor: Colors.indigo[50],
                     onTap: () => handleSelectMoeda(moeda),

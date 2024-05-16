@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/locale.dart';
 
 class AppSettings extends ChangeNotifier {
   late SharedPreferences _prefs;
-  Map<String, String> locale = {'locale': 'pt_BR', 'name': 'R\$'};
+  CustomLocale locale = CustomLocale(locale: 'pt_BR', name: 'R\$');
 
   AppSettings() {
     _startSettings();
@@ -22,7 +23,7 @@ class AppSettings extends ChangeNotifier {
     final local = _prefs.getString('local') ?? 'pt_BR';
     final name = _prefs.getString('name') ?? 'R\$';
 
-    locale = {'locale': local, 'name': name};
+    locale = CustomLocale(locale: local, name: name);
     notifyListeners();
   }
 
