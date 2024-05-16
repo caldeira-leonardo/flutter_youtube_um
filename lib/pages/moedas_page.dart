@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_um/app_controller.dart';
 import 'moedas_detalhes_page.dart';
@@ -25,13 +24,6 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
 
   late final _animation =
       CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
-
-  @override
-  void dispose() {
-    dispose();
-    _controller.dispose();
-    _animation.dispose();
-  }
 
   var tabela = MoedaRepository.tabela;
 
@@ -136,6 +128,13 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    _animation.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // favoritas = Provider.of<FavoritasRepository>(context);
     favoritas = context.watch<FavoritasRepository>();
@@ -174,7 +173,8 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
                         Text(tabela[moeda].nome,
                             style: const TextStyle(
                                 fontSize: 17, fontWeight: FontWeight.w500)),
-                        if (favoritas.lista.contains(tabela[moeda]))
+                        if (favoritas.lista
+                            .any((fav) => fav.sigla == tabela[moeda].sigla))
                           const Icon(Icons.circle, color: Colors.amber, size: 8)
                       ],
                     ),

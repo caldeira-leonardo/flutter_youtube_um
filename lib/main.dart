@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'configs/app_settings.dart';
+import 'configs/hide_config.dart';
 import 'meu_aplicativo.dart';
 import 'repositories/favoritas_repository.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await HiveConfig.start();
+
   runApp(
     MultiProvider(
       providers: [
