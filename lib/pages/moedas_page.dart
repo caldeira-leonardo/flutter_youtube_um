@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:youtube_um/models/moeda.dart';
-import 'package:youtube_um/pages/moedas_detalhes_page.dart';
-import 'package:youtube_um/repositories/favoritas_repository.dart';
-import 'package:youtube_um/repositories/moeda_repository.dart';
+import 'moedas_detalhes_page.dart';
+import '../configs/app_settings.dart';
+import '../models/moeda.dart';
+import '../repositories/favoritas_repository.dart';
+import '../repositories/moeda_repository.dart';
 
 class MoedasPage extends StatefulWidget {
   const MoedasPage({super.key});
@@ -32,10 +33,39 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
   }
 
   var tabela = MoedaRepository.tabela;
-  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+
+  late NumberFormat real;
+  late Map<String, String> loc;
+  late FavoritasRepository favoritas;
+
   List<Moeda> selecionadas = [];
   bool isSorted = false;
-  late FavoritasRepository favoritas;
+
+  readNumberFormat() {
+    loc = context.watch<AppSettings>().locale;
+    real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
+  }
+
+  changeLanguageButton() {
+    final locale = loc['locale'] == 'pt_BR' ? 'en_US' : 'pt_BR';
+    final name = loc['locale'] == 'pt_BR' ? '\$' : 'R\$';
+
+    return PopupMenuButton(
+      icon: const Icon(Icons.language),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          child: ListTile(
+            leading: const Icon(Icons.swap_vert),
+            title: Text('Usar $locale'),
+            onTap: () {
+              context.read<AppSettings>().setLocale(locale, name);
+              Navigator.pop(context);
+            },
+          ),
+        )
+      ],
+    );
+  }
 
   sortItems() {
     if (!isSorted) {
@@ -49,24 +79,25 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
   }
 
   appBarDinamica() {
-    if (selecionadas.isEmpty) {
-      return AppBar(
-        title: const Text('Cripto Moedas'),
-      );
-    } else {
-      return AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: limparSelecionadas,
-        ),
-        title: Text('${selecionadas.length} selecionadas'),
-        backgroundColor: Colors.blueGrey[50],
-        elevation: 1,
-        titleTextStyle: const TextStyle(
-            color: Colors.black87, fontSize: 20, fontWeight: FontWeight.bold),
-        iconTheme: const IconThemeData(color: Colors.black87),
-      );
-    }
+    return selecionadas.isEmpty
+        ? SliverAppBar(
+            title: const Text('Cripto Moedas'),
+            actions: [changeLanguageButton()],
+          )
+        : SliverAppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: limparSelecionadas,
+            ),
+            title: Text('${selecionadas.length} selecionadas'),
+            backgroundColor: Colors.blueGrey[50],
+            elevation: 1,
+            titleTextStyle: const TextStyle(
+                color: Colors.black87,
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
+            iconTheme: const IconThemeData(color: Colors.black87),
+          );
   }
 
   handleShowFavoriteButton() {
@@ -99,21 +130,25 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
     });
   }
 
+  handleSelectMoeda(moeda) {
+    setState(() {
+      (selecionadas.contains(tabela[moeda]))
+          ? selecionadas.remove(tabela[moeda])
+          : selecionadas.add(tabela[moeda]);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    favoritas = Provider.of<FavoritasRepository>(context);
+    // favoritas = Provider.of<FavoritasRepository>(context);
     favoritas = context.watch<FavoritasRepository>();
+
+    readNumberFormat();
 
     return Scaffold(
         body: NestedScrollView(
           floatHeaderSlivers: true,
-          headerSliverBuilder: (context, __) => [
-            const SliverAppBar(
-              title: Text('Cripto moedas'),
-              snap: true,
-              floating: true,
-            )
-          ],
+          headerSliverBuilder: (context, __) => [appBarDinamica()],
           body: NotificationListener<UserScrollNotification>(
             onNotification: (scroll) {
               if (scroll.direction == ScrollDirection.reverse && showFAB) {
@@ -149,14 +184,8 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
                     trailing: Text(real.format(tabela[moeda].preco)),
                     selected: selecionadas.contains(tabela[moeda]),
                     selectedTileColor: Colors.indigo[50],
-                    onTap: () => mostrarDetalhes(tabela[moeda]),
-                    onLongPress: () {
-                      setState(() {
-                        (selecionadas.contains(tabela[moeda]))
-                            ? selecionadas.remove(tabela[moeda])
-                            : selecionadas.add(tabela[moeda]);
-                      });
-                    },
+                    onTap: () => handleSelectMoeda(moeda),
+                    onLongPress: () => handleSelectMoeda(moeda),
                   );
                 },
                 padding: const EdgeInsets.all(16),

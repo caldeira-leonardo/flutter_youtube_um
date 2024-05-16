@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:youtube_um/pages/moedas_detalhes_page.dart';
-import 'package:youtube_um/repositories/favoritas_repository.dart';
+import '../configs/app_settings.dart';
+import '../pages/moedas_detalhes_page.dart';
+import '../repositories/favoritas_repository.dart';
 import '../models/moeda.dart';
 
 class MoedaCard extends StatefulWidget {
@@ -14,12 +15,18 @@ class MoedaCard extends StatefulWidget {
 }
 
 class _MoedaCardState extends State<MoedaCard> {
-  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+  late NumberFormat real;
+  late Map<String, String> loc;
 
   static Map<String, Color> precoColor = <String, Color>{
     'up': Colors.teal,
     'down': Colors.indigo
   };
+
+  readNumberFormat() {
+    loc = context.watch<AppSettings>().locale;
+    real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
+  }
 
   abrirDetalhes() {
     Navigator.push(
@@ -31,6 +38,8 @@ class _MoedaCardState extends State<MoedaCard> {
 
   @override
   Widget build(BuildContext context) {
+    readNumberFormat();
+
     return Card(
       margin: const EdgeInsets.only(top: 12),
       elevation: 2,
