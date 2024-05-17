@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../models/moeda.dart';
 import '../models/posicao.dart';
 import 'hive_repository.dart';
