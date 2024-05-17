@@ -5,7 +5,7 @@ import '../models/posicao.dart';
 
 class ContaHiveAdapter extends TypeAdapter<Posicao> {
   @override
-  final typeId = 0;
+  final typeId = 1;
 
   @override
   Posicao read(BinaryReader reader) {

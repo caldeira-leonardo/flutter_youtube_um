@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../app_controller.dart';
+import '../repositories/conta_repository.dart';
 
 class ConfiguracoesPage extends StatefulWidget {
   const ConfiguracoesPage({super.key});
@@ -14,7 +17,7 @@ class ConfiguracoesPage extends StatefulWidget {
 class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   @override
   Widget build(BuildContext context) {
-    double conta = 0.0;
+    final conta = context.watch<ContaRepository>();
 
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +30,8 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
             ListTile(
               title: const Text('Saldo'),
               subtitle: Text(
-                AppController.currencyFormate(context: context, valor: conta),
+                AppController.currencyFormate(
+                    context: context, valor: conta.saldo),
                 style: TextStyle(fontSize: 25, color: Colors.indigo),
               ),
               trailing: IconButton(
