@@ -1,43 +1,13 @@
-import 'dart:collection';
-
-import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-
-import '../adapters/moeda_hive_adapter.dart';
 import '../models/moeda.dart';
+import 'hive_repository.dart';
 
-class FavoritasRepository extends ChangeNotifier {
-  final List<Moeda> _lista = [];
-  late LazyBox box;
-
-  FavoritasRepository() {
-    _startRepository();
-  }
-
-  _startRepository() async {
-    await _openBox();
-    await _readFavoritas();
-  }
-
-  _openBox() async {
-    Hive.registerAdapter(MoedaHiveAdapter());
-    box = await Hive.openLazyBox<Moeda>('moedas_favoritas');
-  }
-
-  _readFavoritas() async {
-    for (var moeda in box.keys) {
-      Moeda m = await box.get(moeda);
-      _lista.add(m);
-      notifyListeners();
-    }
-  }
-
-  UnmodifiableListView<Moeda> get lista => UnmodifiableListView(_lista);
+class FavoritasRepository extends HiveRepository<Moeda> {
+  FavoritasRepository({required super.adapter, required super.repository});
 
   saveAll(List<Moeda> moedas) {
     for (var moeda in moedas) {
-      if (!_lista.any((atual) => atual.sigla == moeda.sigla)) {
-        _lista.add(moeda);
+      if (!lista.any((atual) => atual.sigla == moeda.sigla)) {
+        addToList(moeda);
         box.put(moeda.sigla, moeda);
       }
     }
@@ -45,7 +15,7 @@ class FavoritasRepository extends ChangeNotifier {
   }
 
   remove(Moeda moeda) {
-    _lista.remove(moeda);
+    removeFromList(moeda);
     box.delete(moeda.sigla);
     notifyListeners();
   }

@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../app_controller.dart';
-import '../repositories/conta_repository.dart';
 
 class ConfiguracoesPage extends StatefulWidget {
   const ConfiguracoesPage({super.key});
@@ -15,7 +14,7 @@ class ConfiguracoesPage extends StatefulWidget {
 class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   @override
   Widget build(BuildContext context) {
-    final conta = context.watch<ContaRepository>();
+    double conta = 0.0;
 
     return Scaffold(
       appBar: AppBar(
@@ -28,8 +27,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
             ListTile(
               title: const Text('Saldo'),
               subtitle: Text(
-                AppController.currencyFormate(
-                    context: context, valor: conta.saldo),
+                AppController.currencyFormate(context: context, valor: conta),
                 style: TextStyle(fontSize: 25, color: Colors.indigo),
               ),
               trailing: IconButton(
@@ -46,9 +44,9 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   updateSaldo() async {
     final form = GlobalKey<FormState>();
     final valor = TextEditingController();
-    final conta = context.read<ContaRepository>();
+    final conta = 0;
 
-    valor.text = conta.saldo.toString();
+    valor.text = conta.toString();
 
     AlertDialog dialog = AlertDialog(
       title: const Text('Atualizar o saldo'),
@@ -73,7 +71,6 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
         TextButton(
             onPressed: () {
               if (form.currentState!.validate()) {
-                conta.saldo(double.parse(valor.text));
                 Navigator.pop(context);
               }
             },

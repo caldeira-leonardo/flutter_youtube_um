@@ -19,19 +19,26 @@ class MoedasPage extends StatefulWidget {
 class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
   bool showFAB = true;
 
-  late final _controller = AnimationController(
-      duration: const Duration(microseconds: 400), vsync: this)
-    ..forward();
+  late AnimationController _controller;
 
-  late final _animation =
-      CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
-
+  late CurvedAnimation _animation;
   var tabela = MoedaRepository.tabela;
 
   late FavoritasRepository favoritas;
 
   List<Moeda> selecionadas = [];
   bool isSorted = false;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+        duration: const Duration(microseconds: 400), vsync: this)
+      ..forward();
+    _animation =
+        CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
+
+    super.initState();
+  }
 
   changeLanguageButton() {
     AppSettings appSettings = context.watch<AppSettings>();
@@ -131,7 +138,7 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
   @override
   void dispose() {
     _controller.dispose();
-    _animation.dispose();
+    // _animation.dispose();
     super.dispose();
   }
 

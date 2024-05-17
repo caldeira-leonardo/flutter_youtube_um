@@ -1,39 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:hive/hive.dart';
 
-import '../database/db.dart';
+import '../adapters/conta_hive_adapter.dart';
 import '../models/posicao.dart';
 
 class ContaRepository extends ChangeNotifier {
-  late Database db;
-  List<Posicao> _carteira = [];
-  double _saldo = 0;
-
-  get saldo => _saldo;
-  List<Posicao> get carteira => _carteira;
+  final List<Posicao> _posicoes = [];
+  late LazyBox box;
 
   ContaRepository() {
-    _initRepository();
+    _startRepository();
   }
 
-  _initRepository() async {
-    await _getSaldo();
+  _startRepository() async {
+    await _openBox();
+    await _readPosicoes();
   }
 
-  _getSaldo() async {
-    db = await DB.instance.database;
-    List conta = await db.query('conta', limit: 1);
-
-    _saldo = conta.first['saldo'];
-    notifyListeners();
+  _openBox() async {
+    Hive.registerAdapter(ContaHiveAdapter());
+    box = await Hive.openLazyBox<Posicao>('posicoes');
   }
 
-  setSaldo(double valor) async {
-    db = await DB.instance.database;
-    db.update('conta', {
-      'saldo': valor,
-    });
-    _saldo = valor;
-    notifyListeners();
+  _readPosicoes() async {
+    for (var posicao in box.keys) {
+      Posicao p = await box.get(posicao);
+      _posicoes.add(p);
+      notifyListeners();
+    }
   }
 }

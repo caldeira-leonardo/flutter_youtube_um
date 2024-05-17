@@ -33,10 +33,9 @@ dependencies:
   intl:
   provider: ^5.0.0
   shared_preferences: ^2.0.6
-  hive: ^2.0.4
+  hive: 
   hive_flutter: ^1.1.0
   path_provider: ^2.0.2
-  sqflite: ^2.0.0+3
   fl_chart: ^0.36.2
 
   # The following adds the Cupertino Icons font to your application.
