@@ -21,13 +21,25 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -41,46 +53,12 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDmnJGgUsxgMF315c4lXsvC5go6vdoojhU',
-    appId: '1:762839524110:web:60d713fe9b0e9600d0ed5f',
-    messagingSenderId: '762839524110',
-    projectId: 'flutter-238b6',
-    authDomain: 'flutter-238b6.firebaseapp.com',
-    storageBucket: 'flutter-238b6.appspot.com',
-  );
-
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDTLofZU0vae49cl128ypyszigqkxP-jDo',
-    appId: '1:762839524110:android:5d1d10558ab81148d0ed5f',
-    messagingSenderId: '762839524110',
-    projectId: 'flutter-238b6',
-    storageBucket: 'flutter-238b6.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA_BbUPydbqxBla1vz_ssgdflnPn8uSxN4',
-    appId: '1:762839524110:ios:9aed85d977084dfcd0ed5f',
-    messagingSenderId: '762839524110',
-    projectId: 'flutter-238b6',
-    storageBucket: 'flutter-238b6.appspot.com',
-    iosBundleId: 'com.example.youtubeUm',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA_BbUPydbqxBla1vz_ssgdflnPn8uSxN4',
-    appId: '1:762839524110:ios:9aed85d977084dfcd0ed5f',
-    messagingSenderId: '762839524110',
-    projectId: 'flutter-238b6',
-    storageBucket: 'flutter-238b6.appspot.com',
-    iosBundleId: 'com.example.youtubeUm',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDmnJGgUsxgMF315c4lXsvC5go6vdoojhU',
-    appId: '1:762839524110:web:3b427f45ab6cb591d0ed5f',
-    messagingSenderId: '762839524110',
-    projectId: 'flutter-238b6',
-    authDomain: 'flutter-238b6.firebaseapp.com',
-    storageBucket: 'flutter-238b6.appspot.com',
+    apiKey: 'AIzaSyDFwHbb_aF8UI-qb1tczHIiRZMVnt6-_9Q',
+    appId: '1:902517782421:web:17a5085d596eea81fe289c',
+    messagingSenderId: '902517782421',
+    projectId: 'qualquer123321',
+    authDomain: 'qualquer123321.firebaseapp.com',
+    storageBucket: 'qualquer123321.appspot.com',
+    databaseURL: 'https://qualquer123321-default-rtdb.firebaseio.com',
   );
 }

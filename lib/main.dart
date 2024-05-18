@@ -10,6 +10,7 @@ import 'firebase_options.dart';
 import 'meu_aplicativo.dart';
 import 'repositories/conta_repository.dart';
 import 'repositories/favoritas_repository.dart';
+import 'services/auth_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => AppSettings()),
         ChangeNotifierProvider(
             create: (context) => FavoritasRepository(

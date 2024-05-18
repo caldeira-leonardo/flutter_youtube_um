@@ -1,11 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../app_controller.dart';
 import '../repositories/conta_repository.dart';
+import '../services/auth_service.dart';
 
 class ConfiguracoesPage extends StatefulWidget {
   const ConfiguracoesPage({super.key});
@@ -32,11 +31,30 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
               subtitle: Text(
                 AppController.currencyFormate(
                     context: context, valor: conta.saldo),
-                style: TextStyle(fontSize: 25, color: Colors.indigo),
+                style: const TextStyle(fontSize: 25, color: Colors.indigo),
               ),
               trailing: IconButton(
                 onPressed: updateSaldo,
                 icon: const Icon(Icons.edit),
+              ),
+            ),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 24),
+              child: OutlinedButton(
+                onPressed: () => context.read<AuthService>().logout(),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Text(
+                        'Sair do app.',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    )
+                  ],
+                ),
               ),
             )
           ],

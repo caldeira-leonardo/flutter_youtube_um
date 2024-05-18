@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'pages/home_page.dart';
+import 'widgets/auth_check.dart';
 
 class MeuAplicativo extends StatelessWidget {
   const MeuAplicativo({super.key});
@@ -11,7 +11,7 @@ class MeuAplicativo extends StatelessWidget {
       title: 'MoedasBase',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.indigo, useMaterial3: false),
-      home: const HomePage(),
+      home: const AuthCheck(),
     );
   }
 }

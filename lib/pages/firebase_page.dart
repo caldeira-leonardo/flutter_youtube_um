@@ -39,7 +39,9 @@ class _FirebaseAppState extends State<FirebaseApp> {
     });
   }
 
-  like() async {}
+  like() async {
+    await _likesRef.set(ServerValue.increment(1));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,30 +49,7 @@ class _FirebaseAppState extends State<FirebaseApp> {
       body: Center(
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           IconButton(onPressed: like, icon: const Icon(Icons.thumb_up)),
-          RichText(
-            text: const TextSpan(text: 'Rich text', children: [
-              TextSpan(
-                text: '123',
-                style: TextStyle(fontWeight: FontWeight.bold),
-                children: [
-                  TextSpan(
-                      text: '456',
-                      style: TextStyle(fontWeight: FontWeight.normal),
-                      children: [TextSpan(text: '789')])
-                ],
-              ),
-              TextSpan(
-                text: '890',
-                style: TextStyle(fontWeight: FontWeight.bold),
-                children: [
-                  TextSpan(
-                      text: '456',
-                      style: TextStyle(fontWeight: FontWeight.normal),
-                      children: [TextSpan(text: '789')])
-                ],
-              ),
-            ]),
-          )
+          Text(_likes.toString())
         ]),
       ),
     );

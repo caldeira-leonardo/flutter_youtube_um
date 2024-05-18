@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   int paginaAtual = 0;
   late PageController pc;
-  static const selectedPage = BottomNavBar.novo;
+  static const selectedPage = BottomNavBar.antigo;
 
   @override
   void initState() {
