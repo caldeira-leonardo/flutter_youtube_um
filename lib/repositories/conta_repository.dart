@@ -6,15 +6,15 @@ import 'moeda_repository.dart';
 class ContaRepository extends HiveRepository<Posicao> {
   List<Posicao> _carteira = [];
   double _saldo = 0;
-  final moedas = MoedaRepository.tabela;
+  MoedaRepository moedas;
 
   get saldo => _saldo;
   List<Posicao> get carteira => _carteira;
 
-  ContaRepository({
-    required super.adapter,
-    required super.repository,
-  });
+  ContaRepository(
+      {required super.adapter,
+      required super.repository,
+      required this.moedas});
 
   _getSaldo() async {
     double conta = await box.get('saldo');
@@ -77,7 +77,7 @@ class ContaRepository extends HiveRepository<Posicao> {
     _carteira = [];
     List posicoes = await box.get('carteira');
     for (var posicao in posicoes) {
-      Moeda moeda = moedas.firstWhere(
+      Moeda moeda = moedas.tabela.firstWhere(
         (m) => m.sigla == posicao['sigla'],
       );
       _carteira.add(Posicao(

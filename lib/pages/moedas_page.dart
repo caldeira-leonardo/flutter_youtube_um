@@ -7,6 +7,7 @@ import '../configs/app_settings.dart';
 import '../models/moeda.dart';
 import '../repositories/favoritas_repository.dart';
 import '../repositories/moeda_repository.dart';
+import '../services/auth_service.dart';
 import 'moedas_detalhes_page.dart';
 
 class MoedasPage extends StatefulWidget {
@@ -18,13 +19,11 @@ class MoedasPage extends StatefulWidget {
 
 class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
   bool showFAB = true;
-
+  late List<Moeda> tabela;
   late AnimationController _controller;
-
   late CurvedAnimation _animation;
-  var tabela = MoedaRepository.tabela;
-
   late FavoritasRepository favoritas;
+  late MoedaRepository moedas;
 
   List<Moeda> selecionadas = [];
   bool isSorted = false;
@@ -55,8 +54,10 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
             leading: const Icon(Icons.swap_vert),
             title: Text('Usar $locale'),
             onTap: () {
-              context.read<AppSettings>().setLocale(locale, name);
+              context.read<AuthService>().logout();
               Navigator.pop(context);
+              // context.read<AppSettings>().setLocale(locale, name);
+              // Navigator.pop(context);
             },
           ),
         )
@@ -146,6 +147,8 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     // favoritas = Provider.of<FavoritasRepository>(context);
     favoritas = context.watch<FavoritasRepository>();
+    moedas = context.watch<MoedaRepository>();
+    tabela = moedas.tabela;
 
     return Scaffold(
         body: NestedScrollView(
@@ -174,7 +177,10 @@ class _MoedasPageState extends State<MoedasPage> with TickerProviderStateMixin {
                           )
                         : SizedBox(
                             width: 40,
-                            child: Image.asset(tabela[moeda].icone),
+                            child: Image.network(
+                              tabela[moeda].icone,
+                              scale: 1.0,
+                            ),
                           ),
                     title: Row(
                       children: [

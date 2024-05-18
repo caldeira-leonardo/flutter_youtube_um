@@ -43,8 +43,9 @@ class _MoedaCardState extends State<MoedaCard> {
         child: Padding(
           padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
           child: Row(children: [
-            Image.asset(
+            Image.network(
               widget.moeda.icone,
+              scale: 1.0,
               height: 40,
             ),
             Expanded(

@@ -51,7 +51,10 @@ class _MoedasDetalhesPageState extends State<MoedasDetalhesPage> {
                 children: [
                   SizedBox(
                     width: 50,
-                    child: Image.asset(widget.moeda.icone),
+                    child: Image.network(
+                      widget.moeda.icone,
+                      scale: 1.0,
+                    ),
                   ),
                   Container(
                     width: 10,
