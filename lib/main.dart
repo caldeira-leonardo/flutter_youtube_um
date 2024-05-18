@@ -25,8 +25,8 @@ void main() async {
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => AppSettings()),
         ChangeNotifierProvider(
-            create: (context) => FavoritasRepository(
-                adapter: MoedaHiveAdapter(), repository: 'moedas_favoritas')),
+            create: (context) =>
+                FavoritasRepository(auth: context.read<AuthService>())),
         ChangeNotifierProvider(
           create: (context) => ContaRepository(
             adapter: ContaHiveAdapter(),
