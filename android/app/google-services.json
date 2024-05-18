@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "762839524110",
+    "project_id": "flutter-238b6",
+    "storage_bucket": "flutter-238b6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762839524110:android:5d1d10558ab81148d0ed5f",
+        "android_client_info": {
+          "package_name": "flutter.youtube.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTLofZU0vae49cl128ypyszigqkxP-jDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

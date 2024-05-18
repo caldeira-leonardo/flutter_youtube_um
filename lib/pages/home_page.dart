@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'comidas_page.dart';
 import 'configuracoes_page.dart';
 import 'favoritas_page.dart';
+import 'firebase_page.dart';
 import 'flexible_page.dart';
 import 'moedas_page.dart';
 
@@ -18,7 +19,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   int paginaAtual = 0;
   late PageController pc;
-  static const selectedPage = BottomNavBar.antigo;
+  static const selectedPage = BottomNavBar.novo;
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class HomePageState extends State<HomePage> {
         : [
             const FlexiblePage(),
             const RestauranteDetalhes(),
+            const FirebaseApp(),
           ];
   }
 
@@ -98,6 +100,16 @@ class HomePageState extends State<HomePage> {
                       size: iconSize,
                     ),
                     label: 'Comidas'),
+                NavigationDestination(
+                    selectedIcon: Icon(
+                      Icons.chat,
+                      size: iconSize,
+                    ),
+                    icon: Icon(
+                      Icons.chat_outlined,
+                      size: iconSize,
+                    ),
+                    label: 'Firebase'),
               ],
             ),
           );
